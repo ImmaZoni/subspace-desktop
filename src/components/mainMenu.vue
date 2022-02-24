@@ -12,8 +12,7 @@ q-menu(auto-close)
         .col
           p.text-grey(v-if="!autoLaunch") {{ lang.autoStart }}
           p.text-black(v-else) {{ lang.autoStart }}
-    // TODO: Enable after stop farmer fix.
-    q-item(:disable="true" @click="reset()")
+    q-item(@click="reset()" clickable)
       .row.items-center
         .col-auto.q-mr-md
           q-icon(color="red" name="refresh")
@@ -88,7 +87,7 @@ export default defineComponent({
         ok: { label: "reset", icon: "refresh", flat: true, color: "red" },
         cancel: true
       }).onOk(async () => {
-        const appDir = await util.getAppDir() 
+        const appDir = await util.getAppDir()
         await util.reset(appDir)
         relaunch()
         // this.$router.replace({ name: "index" })
