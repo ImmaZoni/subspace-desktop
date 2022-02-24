@@ -42,6 +42,7 @@
     "allocatedSpace": "Space to be shared with Subspace Protocol.",
     "estimatingSpace": "Requesting the plot size from the network.",
     "plotsDirectory": "Plots Directory"
+    
   },
   "plottingProgress": {
     "startingFarmer": "Starting the farmer ...",
