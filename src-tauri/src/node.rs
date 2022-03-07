@@ -145,7 +145,7 @@ fn create_configuration<CS: ChainSpec + 'static>(
     let boot_node: sc_service::config::MultiaddrWithPeerId = env::var("BOOTNODE").unwrap().parse().unwrap();
     network.boot_nodes = vec![boot_node];
 
-    /* TEST 2.- (FROM CHAIN SPEC FILE) Comment previous lines (143-144), and having Bootnodes defined on chain-spec.json file - NOT connecting to network.
+    /* TEST 2.- (FROM CHAIN SPEC FILE) Comment previous lines (145-146), and having Bootnodes defined on chain-spec.json file - NOT connecting to network.
         got stuck on: 💤 Idle (0 peers), best: #0 (0xb310…cc78), finalized #0 (0xb310…cc78), ⬇ 0 ⬆ 0
         and throws: ❌ Error while dialing /dns/telemetry.polkadot.io/tcp/443/x-parity-wss/%2Fsubmit%2F: Custom { kind: Other, error: Timeout }  
     
