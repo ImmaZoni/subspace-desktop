@@ -88,6 +88,8 @@ pub(crate) async fn create_full_client<CS: ChainSpec + 'static>(
         Handle::current(),
     )?;
 
+    println!("bootnode - {:?}", config.network.boot_nodes);
+
     subspace_service::new_full::<subspace_runtime::RuntimeApi, ExecutorDispatch>(config, true)
         .await
         .map_err(Into::into)
@@ -136,6 +138,27 @@ fn create_configuration<CS: ChainSpec + 'static>(
             .parse()
             .expect("Multiaddr is correct"),
     ];
+
+    // .env AND chain-spec.json- do not change any of these values, ALREADY CONFIGURED for testing.
+
+    /* TEST 1.- (MANUALLY FROM NETWORKCONFIGURATION)  Loading Bootnodes from .env file and manually set on NetworkConfiguration - connecting to network. */
+    let boot_node: sc_service::config::MultiaddrWithPeerId = env::var("BOOTNODE").unwrap().parse().unwrap();
+    network.boot_nodes = vec![boot_node];
+
+    /* TEST 2.- (FROM CHAIN SPEC FILE) Comment previous lines (143-144), and having Bootnodes defined on chain-spec.json file - NOT connecting to network.
+        got stuck on: 💤 Idle (0 peers), best: #0 (0xb310…cc78), finalized #0 (0xb310…cc78), ⬇ 0 ⬆ 0
+        and throws: ❌ Error while dialing /dns/telemetry.polkadot.io/tcp/443/x-parity-wss/%2Fsubmit%2F: Custom { kind: Other, error: Timeout }  
+    
+    USING dns or ip4 got same error.
+    "bootNodes": [
+        "/dns/farm.1devndogs.com/tcp/30333/p2p/12D3KooWMnAqTcyeUnCZExs2U3o9YnrAHx2ajQYBLzoF9BC3ieLT"
+    ],
+    "bootNodes": [
+        "/ip4/165.227.117.60/tcp/30333/p2p/12D3KooWMnAqTcyeUnCZExs2U3o9YnrAHx2ajQYBLzoF9BC3ieLT"
+    ],
+        
+    */
+
     // Full + Light clients
     network.default_peers_set.in_peers = 25 + 100;
     let role = Role::Authority;
