@@ -103,9 +103,9 @@ q-page.q-pa-lg.q-mr-lg.q-ml-lg
         icon-right="play_arrow"
         outline
         size="lg"
-        :disable="!farmStarted"
+        :disable="!plotFinished"
       )
-      q-tooltip.q-pa-md(v-if="!farmStarted")
+      q-tooltip.q-pa-md(v-if="!plotFinished")
         p.q-mb-lg {{ lang.waitPlotting }}
     .col-auto(v-else)
       q-btn(
@@ -142,7 +142,6 @@ export default defineComponent({
       client: global.client,
       viewedIntro: false,
       plotFinished: false,
-      farmStarted: false,
       localSegIndex: 0,
       netSegIndex: 0,
       plotDirectory: ""
@@ -217,26 +216,30 @@ export default defineComponent({
       }
     },
     async waitNode() {
-      const { publicKey } = await this.client.waitNodeStartApiConnect(
-        this.plotDirectory
-      )
-      const config = await util.config.read(this.plotDirectory)
-
-      if (publicKey && config) {
-        await util.config.update(
-          {
-            ...config,
-            plot: {
-              location: this.plotDirectory,
-              nodeLocation: this.plotDirectory
-            },
-            account: {
-              farmerPublicKey: publicKey.toString(),
-              passHash: config.account.passHash
-            }
-          },
+      try {
+        const { publicKey } = await this.client.waitNodeStartApiConnect(
           this.plotDirectory
         )
+        const config = await util.config.read(this.plotDirectory)
+
+        if (publicKey && config) {
+          await util.config.update(
+            {
+              ...config,
+              plot: {
+                location: this.plotDirectory,
+                nodeLocation: this.plotDirectory
+              },
+              account: {
+                farmerPublicKey: publicKey.toString(),
+                passHash: config.account.passHash
+              }
+            },
+            this.plotDirectory
+          )
+        }
+      } catch (e) {
+        console.error("PLOT PROGRESS waitNode | ERROR", e)
       }
     },
     pausePlotting() {
@@ -256,7 +259,6 @@ export default defineComponent({
       this.plottingData.status = lang.startingFarmer
       farmerTimer = window.setInterval(() => (this.elapsedms += 1000), 1000)
       await this.client.startFarming(this.plotDirectory)
-      this.farmStarted = true
       this.plottingData.status = lang.fetchingPlot
 
       const { utilCache } = await util.config.read(this.plotDirectory)
