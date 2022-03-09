@@ -103,7 +103,7 @@ q-page.q-pa-lg.q-mr-lg.q-ml-lg
         icon-right="play_arrow"
         outline
         size="lg"
-        :disable="!plotFinished"
+        :disable="!farmStarted"
       )
       q-tooltip.q-pa-md(v-if="!plotFinished")
         p.q-mb-lg {{ lang.waitPlotting }}

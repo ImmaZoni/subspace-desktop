@@ -104,40 +104,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94a45b455c14666b85fc40a019e8ab9eb75e3a124e05494f5397122bc9eb06e0"
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "dotenv",
- "event-listener-primitives",
- "fdlimit",
- "fs2",
- "hex",
- "log",
- "names",
- "sc-chain-spec",
- "sc-executor",
- "sc-network",
- "sc-service",
- "sc-tracing",
- "serde",
- "serde_json",
- "sp-core",
- "sp-panic-handler",
- "subspace-core-primitives",
- "subspace-farmer",
- "subspace-runtime",
- "subspace-service",
- "subspace-solving",
- "substrate-build-script-utils",
- "tauri",
- "tauri-build",
- "tiny-bip39",
- "tokio",
- "winreg 0.10.1",
-]
-
-[[package]]
 name = "approx"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9371,6 +9337,40 @@ dependencies = [
  "serde",
  "serde_arrays",
  "sha2 0.10.1",
+]
+
+[[package]]
+name = "subspace-desktop"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "dotenv",
+ "event-listener-primitives",
+ "fdlimit",
+ "fs2",
+ "hex",
+ "log",
+ "names",
+ "sc-chain-spec",
+ "sc-executor",
+ "sc-network",
+ "sc-service",
+ "sc-tracing",
+ "serde",
+ "serde_json",
+ "sp-core",
+ "sp-panic-handler",
+ "subspace-core-primitives",
+ "subspace-farmer",
+ "subspace-runtime",
+ "subspace-service",
+ "subspace-solving",
+ "substrate-build-script-utils",
+ "tauri",
+ "tauri-build",
+ "tiny-bip39",
+ "tokio",
+ "winreg 0.10.1",
 ]
 
 [[package]]
