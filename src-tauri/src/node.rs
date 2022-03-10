@@ -88,8 +88,6 @@ pub(crate) async fn create_full_client<CS: ChainSpec + 'static>(
         Handle::current(),
     )?;
 
-    println!("bootnode - {:?}", config.network.boot_nodes);
-
     subspace_service::new_full::<subspace_runtime::RuntimeApi, ExecutorDispatch>(config, true)
         .await
         .map_err(Into::into)
@@ -138,9 +136,7 @@ fn create_configuration<CS: ChainSpec + 'static>(
             .parse()
             .expect("Multiaddr is correct"),
     ];
-    let boot_node: sc_service::config::MultiaddrWithPeerId = "/dns/aries-farm-rpc-b.subspace.network/tcp/30333/p2p/12D3KooWPjMZuSYj35ehced2MTJFf95upwpHKgKUrFRfHwohzJXr".parse().unwrap();
-    network.boot_nodes = vec![boot_node];
-
+    network.boot_nodes = chain_spec.boot_nodes().to_vec();
     // Full + Light clients
     network.default_peers_set.in_peers = 25 + 100;
     let role = Role::Authority;
