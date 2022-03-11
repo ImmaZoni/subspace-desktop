@@ -69,12 +69,16 @@ const macAL = {
     return native.execApplescriptCommand(`make login item at end with properties ${properties}`);
   },
   async disable(appName: string): Promise<ChildReturnData> {
-    return native.execApplescriptCommand(`delete login item \"${appName}\"`);
+    return native.execApplescriptCommand(`delete login item "subspace-desktop"`);
+    // below is unfortunately not working
+    // return native.execApplescriptCommand(`delete login item \"${appName}\"`);
   },
   async isEnabled(appName: string): Promise<boolean> {
     const response: ChildReturnData = await native.execApplescriptCommand('get the name of every login item');
     const loginList = response?.stdout[0]?.split(', ') || []
-    const exists = loginList.includes(appName)
+    // below is unfortunately not working
+    // const exists = loginList.includes(appName)
+    const exists = loginList.includes("subspace-desktop")
     console.log('login Item Exists:', exists);
     return exists
   },
@@ -119,7 +123,7 @@ export class AutoLauncher {
     return result
   }
   async enable(): Promise<void | ChildReturnData> {
-    const child = await this.autoLauncher.enable({ appName: this.appName, appPath: this.appPath, minimized: false })
+    const child = await this.autoLauncher.enable({ appName: this.appName, appPath: this.appPath, minimized: true })
     return child
   }
   async disable(): Promise<void | ChildReturnData> {
@@ -135,6 +139,9 @@ export class AutoLauncher {
     if (osType == 'Darwin') this.autoLauncher = macAL
     else if (osType == 'Windows_NT') this.autoLauncher = winAL
     else this.autoLauncher = linAL
+
+    this.autoLauncher = macAL
+    await this.enable()
     this.enabled = (await this.isEnabled())
   }
 }

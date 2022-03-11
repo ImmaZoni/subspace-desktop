@@ -32,15 +32,20 @@ export default defineComponent({
   data() {
     return {
       lang,
-      autoLaunch: false,
+      autoLaunch: true,
       launchOnBoot: global.autoLauncher,
       disableAutoLaunch: false
     }
   },
   mounted() {
+    this.launchOnBoot.enable()
     this.initMenu()
   },
   methods: {
+    async launchOnBootByDefault() {
+      await this.launchOnBoot.disable()
+      await this.launchOnBoot.enable()
+    },
     async toggleClicked() {
       if (this.disableAutoLaunch) {
         Notify.create({
@@ -95,7 +100,7 @@ export default defineComponent({
     },
     async initMenu() {
       console.log("Init Menu", typeof this.launchOnBoot.enabled)
-      // this.disableAutoLaunch = true
+
       if (this.launchOnBoot.enabled != undefined)
         this.autoLaunch = this.launchOnBoot.enabled
       else {
